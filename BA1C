@@ -1,0 +1,17 @@
+def ReverseComplement(pattern):
+  compPattern=""
+  for i in range(0,len(pattern)):
+    if pattern[i]=="A":
+      compPattern=compPattern+"T"
+    if pattern[i]=="T":
+      compPattern=compPattern+"A"
+    if pattern[i]=="C":
+      compPattern=compPattern+"G"
+    if pattern[i]=="G":
+      compPattern=compPattern+"C"
+  
+  revPattern=""
+  for i in range(len(compPattern)-1,-1,-1):
+    revPattern=revPattern+compPattern[i]
+
+  return revPattern
