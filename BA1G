@@ -1,0 +1,9 @@
+def HammingDistance(p,q):
+  if len(p)!=len(q):
+    return -1
+  count=0
+  for i in range(0,len(p)):
+    if p[i]!=q[i]:
+      count=count+1
+  
+  return count
