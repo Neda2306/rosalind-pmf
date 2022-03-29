@@ -1,0 +1,14 @@
+def PatternMatching(pattern,genom):
+  D=dict()
+  count=0
+
+  for i in range(0,len(genom)-len(pattern)+1):
+    if genom[i:i+len(pattern)]==pattern:
+      count=count+1
+      D[count-1]=i
+  
+  return D
+
+D=PatternMatching(input(),input())
+for k,v in D.items():
+  print(v)
