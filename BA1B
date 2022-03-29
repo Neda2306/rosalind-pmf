@@ -1,0 +1,35 @@
+def Text(text,i,k):
+  return text[i:(i+k)]
+  
+def PatternCount(text,pattern):
+  count=0
+  for i in range(0,len(text)-len(pattern)+1):
+    if Text(text,i,len(pattern))==pattern:
+      count=count+1
+  return count
+
+def FrequentWords(text,k):
+  d=dict()
+  count=dict()
+  L=list()
+
+  for i in range(0,len(text)-k+1):
+    pattern=Text(text,i,k)
+    count[i]=PatternCount(text,pattern)
+  
+  maxCount=max(count.values())
+
+  for i in range(0,len(text)-k+1):
+    if count[i]==maxCount:
+      L.append(Text(text,i,k))
+  
+  novaL=list(set(L))
+
+  for i in range(0,len(novaL)):
+    d[i]=novaL[i]
+  return d
+
+d=FrequentWords(input(),14)
+for k,v in d.items():
+  print(v)
+
