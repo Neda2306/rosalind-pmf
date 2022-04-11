@@ -1,0 +1,14 @@
+def Text(pattern,i,k):
+  return pattern[i:i+k]
+  
+def StringComposition(text,k):
+  compos=list()
+
+  for i in range(0,len(text)-k+1):
+    compos.append(Text(text,i,k))
+  
+  return sorted(compos)
+
+compos=StringComposition(input(),int(input()))
+for s in sorted(compos):
+  print(s)
