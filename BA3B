@@ -1,0 +1,10 @@
+def StringSpelled(path):
+  result=path[len(path)-1]
+
+  for i in range(len(path)-2,-1,-1):
+    result=path[i][0]+result
+
+  return result
+
+result=StringSpelled(input().split(" "))
+print(result)
