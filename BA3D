@@ -1,0 +1,17 @@
+def DeBruijnGraph(k,text):
+  d={}
+
+  for i in range(0,len(text)-k+1):
+    pattern=text[i:(i+k-1)]
+    patternn=text[(i+1):(i+k)]
+    if pattern not in d:
+      d[pattern]=[patternn]
+    else:
+      d[pattern].append(patternn)
+  return d
+
+d=DeBruijnGraph(int(input()),input())
+ispis=""
+for first in sorted(d.keys()):
+  second=",".join(sorted(d[first]))
+  print(first+ " -> " +second)
