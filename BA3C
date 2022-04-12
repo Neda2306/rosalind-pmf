@@ -1,0 +1,20 @@
+def Prefix(pattern):
+  return pattern[:-1]
+  
+def Sufix(pattern):
+  return pattern[1:]
+  
+def OverlapGraph(patterns):
+  sortPatterns=sorted(patterns)
+  d=dict()
+
+  for i in range(0,len(sortPatterns)):
+    pattern=sortPatterns[i]
+    for j in range(0,len(sortPatterns)):
+      if Sufix(pattern)==Prefix(sortPatterns[j]):
+        d[pattern]=sortPatterns[j]
+  return d
+
+d=OverlapGraph(input().split(" "))
+for k,v in d.items():
+  print(k+ " -> " +v)
