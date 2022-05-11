@@ -1,0 +1,21 @@
+def Text(text,i,k):
+  return text[i:(i+k)]
+
+def ClumpFinding(genom,k,L,t):
+  clumps=list()
+
+  for i in range(0,len(genom)-L+1):
+    interval=genom[i:(i+L)]
+    for j in range(0,len(interval)-k+1):
+      pattern=Text(interval,j,k)
+      count=0
+      for l in range(0,len(interval)-k+1):
+        if Text(interval,l,k)==pattern:
+          count=count+1
+      if count>=t:
+        clumps.append(pattern)
+  
+  return list(set(clumps))
+
+rez=ClumpFinding(input(),int(input()),int(input()),int(input()))
+print(rez)
