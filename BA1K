@@ -1,0 +1,53 @@
+def GenerateArray(k):
+  base=['A','C','G','T']
+  array=base
+  for n in range(0,k-1):
+    array=[b+a for a in array for b in base]
+  
+  return array
+
+def Text(text,i,k):
+  return text[i:(i+k)]
+
+def PatternCount(text,pattern):
+  count=0
+  for i in range(0,len(text)-len(pattern)+1):
+    if Text(text,i,len(pattern))==pattern:
+      count=count+1
+  return count
+
+def LastSymbol(pattern):
+  return pattern[len(pattern)-1]
+
+def Prefix(pattern):
+  return pattern[0:len(pattern)-1]
+
+def SymbolToNumber(symbol):
+  if symbol=="A":
+    return 0
+  if symbol=="C":
+    return 1
+  if symbol=="G":
+    return 2
+  if symbol=="T":
+    return 3
+ 
+ def PatternToNumber(pattern):
+  if len(pattern)==0:
+    return 0
+
+  symbol=LastSymbol(pattern)
+  prefix=Prefix(pattern)
+
+  return 4*PatternToNumber(prefix)+SymbolToNumber(symbol)
+
+def FrequencyArray(text,k):
+  patterns=sorted(GenerateArray(k))
+  array=[]
+  for i in range(0,len(patterns)):
+    array.append(PatternCount(text,patterns[i]))
+  return array
+
+array=FrequencyArray(input(),int(input()))
+print(" ".join(map(str,array)))
+
