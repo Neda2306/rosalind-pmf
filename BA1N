@@ -1,0 +1,37 @@
+def FirstSymbol(Pattern):
+  return Pattern[0]
+
+def Suffix(pattern):
+  return pattern[1:len(pattern)]
+
+def HammingDistance(p,q):
+  if len(p)!=len(q):
+    return -1
+  count=0
+  for i in range(0,len(p)):
+    if p[i]!=q[i]:
+      count=count+1
+  
+  return count
+  
+def Neighbors(pattern,d):
+  if d==0:
+    return [pattern]
+  if len(pattern)==1:
+    return ["A","C","G","T"]
+
+  neighborhood=[]
+  base=['A','C','G','T']
+  suffixNeighbors=Neighbors(Suffix(pattern),d)
+
+  for i in range(0,len(suffixNeighbors)):
+    if HammingDistance(Suffix(pattern),suffixNeighbors[i])<d:
+      for c in base:
+        neighborhood.append(c+suffixNeighbors[i])
+    else:
+      neighborhood.append(FirstSymbol(pattern)+suffixNeighbors[i])
+  return neighborhood
+
+rez=Neighbors(input(),int(input()))
+for n in rez:
+  print(n)
