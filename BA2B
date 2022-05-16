@@ -1,0 +1,32 @@
+def GenerateArray(k):
+  charSet=['A','C','G','T']
+  array=charSet
+  for n in range(0,k-1):
+    array=[i+j for i in array for j in charSet]
+  
+  return array
+  
+def MinHammingDistance(kmer,string):
+  minDistance=len(kmer)
+  for i in range(0,len(string)-len(kmer)+1):
+    distance = sum([1 for j in range(0,len(kmer)) if kmer[j] != string[i:i+len(kmer)][j]])
+    if distance<minDistance:
+      minDistance=distance
+  return minDistance
+
+def MedianString(dnaList,k):
+  pattern=GenerateArray(k)
+  distance={}
+  minString=len(pattern)*k
+  median=''
+  for p in pattern:
+    sumDistance=0
+    for dna in dnaList:
+      sumDistance=sumDistance+MinHammingDistance(p,dna)
+    if sumDistance<minString:
+      minString=sumDistance
+      median=p
+  return median
+
+median=MedianString(input().split(' '),int(input()))
+print(median)
