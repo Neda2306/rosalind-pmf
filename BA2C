@@ -1,0 +1,32 @@
+def Probability(kmer,profile):
+  prob=1
+  for index,letter in enumerate(kmer):
+    if letter=='A':
+      prob=prob*profile[0][index]
+    elif letter=='C':
+      prob=prob*profile[1][index]
+    elif letter=='G':
+      prob=prob*profile[2][index]
+    elif letter=='T':
+      prob=prob*profile[3][index]
+  return prob
+def ProfileMostProbable(text,k,profile):
+  best=""
+  bestProb=0.0000
+  kmers=set()
+  for i in range(0,len(text)-k+1):
+    kmers.add(text[i:i+k])
+  
+  for kmer in kmers:
+    prob=Probability(kmer,profile)
+    if prob>bestProb:
+      best=kmer
+      bestProb=prob
+  return best
+
+with open("/content/sample_data/rosalind_ba2c(1).txt", "r") as f:
+        text = f.readline().strip()
+        k = int(f.readline().strip())
+        matrix =[[float(l) for l in line.strip().split()] for line in f]
+
+ProfileMostProbable(text,k,matrix)
