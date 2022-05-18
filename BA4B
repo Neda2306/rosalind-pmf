@@ -1,0 +1,64 @@
+def ReverseComplement(pattern):
+  compPattern=""
+  for i in range(0,len(pattern)):
+    if pattern[i]=="A":
+      compPattern=compPattern+"T"
+    if pattern[i]=="T":
+      compPattern=compPattern+"A"
+    if pattern[i]=="C":
+      compPattern=compPattern+"G"
+    if pattern[i]=="G":
+      compPattern=compPattern+"C"
+  
+  revPattern=""
+  for i in range(len(compPattern)-1,-1,-1):
+    revPattern=revPattern+compPattern[i]
+
+  return revPattern
+GeneticCode={
+    'AAA': 'K',     'CAA': 'Q',     'GAA': 'E',     'UAA': '*',
+    'AAC': 'N',     'CAC': 'H',     'GAC': 'D',     'UAC': 'Y',
+    'AAG': 'K',     'CAG': 'Q',     'GAG': 'E',     'UAG': '*',
+    'AAU': 'N',     'CAU': 'H',     'GAU': 'D',     'UAU': 'Y',
+    'ACA': 'T',     'CCA': 'P',     'GCA': 'A',     'UCA': 'S',
+    'ACC': 'T',     'CCC': 'P',     'GCC': 'A',     'UCC': 'S',
+    'ACG': 'T',     'CCG': 'P',     'GCG': 'A',     'UCG': 'S',
+    'ACU': 'T',     'CCU': 'P',     'GCU': 'A',     'UCU': 'S',
+    'AGA': 'R',     'CGA': 'R',     'GGA': 'G',     'UGA': '*',
+    'AGC': 'S',     'CGC': 'R',     'GGC': 'G',     'UGC': 'C',
+    'AGG': 'R',     'CGG': 'R',     'GGG': 'G',     'UGG': 'W',
+    'AGU': 'S',     'CGU': 'R',     'GGU': 'G',     'UGU': 'C',
+    'AUA': 'I',     'CUA': 'L',     'GUA': 'V',     'UUA': 'L',
+    'AUC': 'I',     'CUC': 'L',     'GUC': 'V',     'UUC': 'F',
+    'AUG': 'M',     'CUG': 'L',     'GUG': 'V',     'UUG': 'L',
+    'AUU': 'I',     'CUU': 'L',     'GUU': 'V',     'UUU': 'F'
+}
+
+def ProteinTranslation(pattern):
+  peptide=""
+  for i in range(0,len(pattern),3):
+    kmer=pattern[i:i+3]
+    symbol=GeneticCode[kmer]
+    if symbol=='*':
+      break
+    peptide=peptide+symbol
+  
+  return peptide
+
+def DnaToRna(pattern):
+  return pattern.replace('T','U')
+
+def PeptideEncoding(text,peptide):
+  k=3*len(peptide)
+  substrings=list()
+  for i in range(0,len(text)-k+1):
+    kmer=text[i:i+k]
+    rna=DnaToRna(kmer)
+    revComp=ReverseComplement(kmer)
+    if ProteinTranslation(rna)==peptide or ProteinTranslation(DnaToRna(revComp))==peptide:
+      substrings.append(kmer)
+  return substrings
+
+rez=PeptideEncoding(input(),input())
+for element in rez:
+  print(element)
