@@ -1,0 +1,15 @@
+def DPChange(money,coins):
+  minNumCoins=dict()
+  minNumCoins[0]=0
+  for m in range(1,money+1):
+    minNumCoins[m]=m*money
+    for i in range(1,len(coins)):
+      if m>=int(coins[i]):
+        if minNumCoins[m-int(coins[i])]+1<minNumCoins[m]:
+          minNumCoins[m]=minNumCoins[m-int(coins[i])]+1
+  return minNumCoins[money]
+
+money=int(input())
+coins=input().split(",")
+change=DPChange(money,coins)
+print(change)
