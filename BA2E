@@ -1,0 +1,71 @@
+def Text(text,i,k):
+  return text[i:i+k]
+  
+def Profile(motifs,pseudo=1):
+    k = len(motifs[0])
+    profile = {'A': [pseudo]*k, 'C': [pseudo]*k, 'G': [pseudo]*k, 'T': [pseudo]*k}
+    for i in range(k):
+        for j in range(len(motifs)):
+            profile[motifs[j][i]][i] += 1
+    return profile
+    
+def Probability(kmer, profile):
+    prob = 1
+    for i, letter in enumerate(kmer):
+        prob *= profile[letter][i]
+    return prob
+    
+def ProfileMostProbableKmer(text, profile, k):
+    bestProb = -1
+    for i in range(len(text) - k + 1):
+        kmer = Text(text,i,k)
+        prob = Probability(kmer, profile)
+        if prob > bestProb:
+            bestProb = prob
+            result = kmer
+    return result
+    
+def HammingDistance(p,q):
+  if len(p)!=len(q):
+    return -1
+  count=0
+  for i in range(0,len(p)):
+    if p[i]!=q[i]:
+      count=count+1
+  
+  return count
+  
+def Score(motifs):
+    k = len(motifs[0])
+    profile = Profile(motifs)
+    consensus = ''
+    for i in range(k):
+        most_freq = 0
+        for letter in ['A', 'C', 'G', 'T']:
+            if profile[letter][i] > most_freq:
+                most_freq = profile[letter][i]
+                sum = letter
+        consensus += sum
+    score = 0
+    for motif in motifs:
+        score += HammingDistance(consensus, motif)
+    return score
+    
+def GreedyMotifSearch(dnaList,k,t):
+ bestMotifs=[]
+ for i in range(0,len(dnaList)):
+    bestMotifs.append(Text(dnaList[i],0,k))
+ 
+ for i in range(len(dnaList[0]) - k + 1):
+    motifs = [Text(dnaList[0],i,k)]
+    for j in range(1, t):
+          profile = Profile(motifs)
+          motifs.append(ProfileMostProbableKmer(dnaList[j], profile, k))
+    if Score(motifs) < Score(bestMotifs):
+          bestMotifs = motifs
+          result = Score(motifs)
+ return bestMotifs
+
+best=GreedyMotifSearch(input().split(" "),int(input()),int(input()))
+for element in best:
+  print(element)
