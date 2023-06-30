@@ -1,9 +1,13 @@
 def Text(text,i,k):
   return text[i:(i+k)]
-  
+
 def PatternCount(text,pattern):
   count=0
-  for i in range(0,len(text)-len(pattern)+1):
-    if Text(text,i,len(pattern))==pattern:
+  k=len(pattern)
+  for i in range(0,len(text)-k+1):
+    if Text(text,i,k)==pattern:
       count=count+1
   return count
+
+res=PatternCount(input(),input())
+print(res)
