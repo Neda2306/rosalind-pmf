@@ -1,17 +1,20 @@
+import sys
+
 def Text(text,i,k):
   return text[i:(i+k)]
-  
+
 def PatternCount(text,pattern):
+  k=len(pattern)
   count=0
-  for i in range(0,len(text)-len(pattern)+1):
-    if Text(text,i,len(pattern))==pattern:
+
+  for i in range(0,len(text)-k+1):
+    if Text(text,i,k)==pattern:
       count=count+1
   return count
 
 def FrequentWords(text,k):
-  d=dict()
+  d=list()
   count=dict()
-  L=list()
 
   for i in range(0,len(text)-k+1):
     pattern=Text(text,i,k)
@@ -21,15 +24,12 @@ def FrequentWords(text,k):
 
   for i in range(0,len(text)-k+1):
     if count[i]==maxCount:
-      L.append(Text(text,i,k))
+      d.append(Text(text,i,k))
+  d=dict.fromkeys(d)
   
-  novaL=list(set(L))
-
-  for i in range(0,len(novaL)):
-    d[i]=novaL[i]
   return d
 
-d=FrequentWords(input(),14)
-for k,v in d.items():
-  print(v)
+res=FrequentWords(input(),int(input()))
+
+sys.stdout.write(str(res))
 
