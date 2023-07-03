@@ -1,31 +1,31 @@
 def Skew(genom):
   skew=[0]
+  skew_i=0
+
   for i in range(0,len(genom)):
-    if genom[i]=='G':
-      skew.append(skew[i]+1)
-    elif genom[i]=='C':
-      skew.append(skew[i]-1)
+    if genom[i]=="G":
+      skew_i+=1
+    elif genom[i]=="C":
+      skew_i-=1
     else:
-      skew.append(skew[i])
+      pass
+    skew.append(skew_i)
   
   return skew
 
 def MinimumSkew(genom):
   skew=Skew(genom)
-  minSkew=0
-  minimizeSkew=[]
+  minSkew=min(skew)
 
-  for i in range(0,len(genom)):
-    current=skew[i]
-    if current==minSkew:
-      minimizeSkew.append(i)
-    elif current<minSkew:
-      minSkew=current
-      minimizeSkew=[]
-      minimizeSkew.append(i)
+  mini=[]
   
-  return minimizeSkew
+  for i in range(0,len(skew)):
+    if skew[i]==minSkew:
+      mini.append(i)
 
-result=MinimumSkew(input())
-for min in result:
-  print(min)
+  return mini
+
+res=MinimumSkew(input())
+
+for i in res:
+  print(i)
