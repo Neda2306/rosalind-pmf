@@ -1,11 +1,11 @@
-def NumberToSymbol(number):
-  if number==0:
+def NumberToSymbol(num):
+  if num==0:
     return "A"
-  if number==1:
+  if num==1:
     return "C"
-  if number==2:
+  if num==2:
     return "G"
-  if number==3:
+  if num==3:
     return "T"
 
 def NumberToPattern(index,k):
@@ -19,3 +19,6 @@ def NumberToPattern(index,k):
   prefixPattern=NumberToPattern(prefixIndex,k-1)
 
   return prefixPattern+symbol
+
+res=NumberToPattern(int(input()),int(input()))
+print(res)
