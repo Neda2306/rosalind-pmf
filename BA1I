@@ -3,47 +3,55 @@ import itertools
 def Text(text,i,k):
   return text[i:(i+k)]
 
-def HammingDistance(p,q):
-  if len(p)!=len(q):
-    return -1
-  count=0
-  for i in range(0,len(p)):
-    if p[i]!=q[i]:
-      count=count+1
-  
-  return count
-  
 def GenerateArray(k):
   base=["A","C","G","T"]
   array=list()
   comb=[p for p in itertools.product(base,repeat=k)]
+  
   for element in comb:
     pattern=""
     for i in range(0,len(element)):
       pattern=pattern+element[i]
     array.append(pattern)
-  return array
   
- def MismatchesFrequentWords(text,k,d):
+  return array
+
+def HammingDistance(p,q):
+  if len(p)!=len(q):
+    return -1
+  
+  d=0
+  for i in range(0,len(p)):
+    if p[i]!=q[i]:
+      d+=1
+  return d
+
+def FrequentWordsMismatches(text,k,d):
+  kmers=GenerateArray(k)
   countD=dict()
+
   for i in range(0,4**k):
-    pattern=(GenerateArray(k))[i]
+    kmer=kmers[i]
     count=0
     for j in range(0,len(text)-k+1):
-      pat=Text(text,j,k)
-      if HammingDistance(pattern,pat)<=d:
-        count=count+1
-    countD[pattern]=count
-  words=list()
-  max=0
-  s=0
-  for v in countD.values():
-    if v>max:
-      max=v
-  [words.append(k) for k,v in countD.items() if (v==max and k not in words)]
-  
-  return words
+      pattern=Text(text,j,k)
+      if HammingDistance(kmer,pattern)<=d:
+        count+=1
+    countD[kmer]=count
 
-rez=MismatchesFrequentWords(input(),int(input()),int(input()))
-for element in rez:
-  print(element,end=" ")
+  max=0
+  for val in countD.values():
+    if val>max:
+      max=val
+  
+  maxFrequent=[]
+  for k,v in countD.items():
+    if v==max and k not in maxFrequent:
+      maxFrequent.append(k)
+  
+  return maxFrequent
+
+res=FrequentWordsMismatches(input(),int(input()),int(input()))
+
+for kmer in res:
+  print(kmer,end=" ")
