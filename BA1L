@@ -1,9 +1,3 @@
-def LastSymbol(pattern):
-  return pattern[len(pattern)-1]
-  
-def Prefix(pattern):
-  return pattern[0:len(pattern)-1]
-
 def SymbolToNumber(symbol):
   if symbol=="A":
     return 0
@@ -13,12 +7,13 @@ def SymbolToNumber(symbol):
     return 2
   if symbol=="T":
     return 3
- 
- def PatternToNumber(pattern):
+
+def PatternToNumber(pattern):
   if len(pattern)==0:
     return 0
+  newPattern=pattern[:-1]
+  lastSymbol=pattern[len(pattern)-1]
+  return 4*PatternToNumber(newPattern)+SymbolToNumber(lastSymbol)
 
-  symbol=LastSymbol(pattern)
-  prefix=Prefix(pattern)
-
-  return 4*PatternToNumber(prefix)+SymbolToNumber(symbol)
+res=PatternToNumber(input())
+print(res)
