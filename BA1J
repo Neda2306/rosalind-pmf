@@ -2,77 +2,73 @@ import itertools
 
 def Text(text,i,k):
   return text[i:(i+k)]
-  
-def PatternCount(text,pattern):
-  count=0
-  for i in range(0,len(text)-len(pattern)+1):
-    if Text(text,i,len(pattern))==pattern:
-      count=count+1
-  return count
-  
+
 def HammingDistance(p,q):
   if len(p)!=len(q):
     return -1
-  count=0
-  for i in range(0,len(p)):
+  
+  dist=0
+  for i in range(len(p)):
     if p[i]!=q[i]:
-      count=count+1
+      dist+=1
   
-  return count
+  return dist
+
+def ReverseComplement(pattern):
+  cPattern=""
+  for element in pattern:
+    if element=="A":
+      cPattern=cPattern+"T"
+    if element=="T":
+      cPattern=cPattern+"A"
+    if element=="C":
+      cPattern=cPattern+"G"
+    if element=="G":
+      cPattern=cPattern+"C"
   
+  revPattern=cPattern[::-1]
+  return revPattern
+
 def GenerateArray(k):
   base=["A","C","G","T"]
   array=list()
   comb=[p for p in itertools.product(base,repeat=k)]
+
   for element in comb:
     pattern=""
     for i in range(0,len(element)):
       pattern=pattern+element[i]
     array.append(pattern)
   return array
-  
- def ReverseComplement(pattern):
-  compPattern=""
-  for i in range(0,len(pattern)):
-    if pattern[i]=="A":
-      compPattern=compPattern+"T"
-    if pattern[i]=="T":
-      compPattern=compPattern+"A"
-    if pattern[i]=="C":
-      compPattern=compPattern+"G"
-    if pattern[i]=="G":
-      compPattern=compPattern+"C"
-  
-  revPattern=""
-  for i in range(len(compPattern)-1,-1,-1):
-    revPattern=revPattern+compPattern[i]
 
-  return revPattern
-
-def MismatchesFrequentWords(text,k,d):
+def MismatchesReverseComplementFrequent(text,k,d):
   countD=dict()
+  kmers=GenerateArray(k)
+
   for i in range(0,4**k):
-    pattern=(GenerateArray(k))[i]
+    kmer=kmers[i]
     count=0
     countR=0
     for j in range(0,len(text)-k+1):
-      pat=Text(text,j,k)
-      patR=ReverseComplement(pat)
-      if HammingDistance(pattern,pat)<=d:
-        count=count+1
-      if HammingDistance(patR,pattern)<=d:
-        countR=countR+1
-    countD[pattern]=count+countR
-  words=list()
+      pattern=Text(text,j,k)
+      rcPattern=ReverseComplement(pattern)
+      if HammingDistance(kmer,pattern)<=d:
+        count+=1
+      if HammingDistance(kmer,rcPattern)<=d:
+        countR+=1
+    countD[kmer]=count+countR
+
   max=0
-  s=0
   for v in countD.values():
     if v>max:
       max=v
-  [words.append(k) for k,v in countD.items() if (v==max and k not in words)]
-  
-  return words
 
-rez=MismatchesFrequentWords(input(),int(input()),int(input()))
-for element in rez:
+  words=[]
+  for k,v in countD.items():
+    if v==max and k not in words:
+      words.append(k)
+  return words   
+
+res=MismatchesReverseComplementFrequent(input(),int(input()),int(input()))
+for element in res:
   print(element,end=" ")
