@@ -1,55 +1,62 @@
-def ImmediateNeighbour(pattern):
-  neighbour=set()
-  chSet={"A","C","G","T"}
-  for i in range(0,len(pattern)):
-    for c in chSet:
-      neighbour.add(pattern[:i]+c+pattern[i+1:])
-  return neighbour
-  
- def Neighbours(pattern,d):
-  if d==0:
-    return {pattern}
-  imedNeighbour=ImmediateNeighbour(pattern)
-  neighbour=imedNeighbour
-  for j in range(0,d-1):
-    for element in imedNeighbour:
-      neighbour=neighbour.union(ImmediateNeighbour(element))
-    imedNeighbour=neighbour
-  return neighbour
- 
- def HammingDistance(p,q):
+import itertools
+
+def HammingDistance(p,q):
   if len(p)!=len(q):
     return -1
-  count=0
+  dist=0
   for i in range(0,len(p)):
     if p[i]!=q[i]:
-      count=count+1
+      dist+=1
+  return dist
+
+def GenerateArray(k):
+  base=["A","C","G","T"]
+  array=list()
+  comb=[p for p in itertools.product(base,repeat=k)]
+
+  for element in comb:
+    pattern=""
+    for i in range(len(element)):
+      pattern=pattern+element[i]
+    array.append(pattern)
   
-  return count
- 
- def PatternAppear(pattern,text,d):
+  return array
+
+def NeighBours(pattern,d):
+  array=GenerateArray(len(pattern))
+  kmers=[]
+
+  for element in array:
+    if HammingDistance(element,pattern)<=d:
+      kmers.append(element)
+  return kmers
+
+def PatternAppear(pattern,text,d):
   for i in range(0,len(text)-len(pattern)+1):
-    if HammingDistance(pattern,text[i:i+len(pattern)])<=d:
+    if HammingDistance(pattern,text[i:(i+len(pattern))])<=d:
       return True
   return False
-  
- def MotifEnumration(dnaList,k,d):
-  patterns=set()
-  neighbours=set()
-  text=dnaList[0]
-  for i in range(0,len(text)-k+1):
-    ngb=Neighbours(text[i:i+k],d)
-    neighbours=neighbours.union(ngb)
-  for n in neighbours:
-    ValidPattern=True
-    for i in range(1,len(dnaList)):
-      if not PatternAppear(n,dnaList[i],d):
-        ValidPattern=False
-        break
-    if ValidPattern:
-      patterns.add(n)
-  return patterns
 
-patterns=MotifEnumration(input().split(" "),int(input()),int(input()))
-for s in patterns:
-  print(s)
+def MotifEnumeration(DnaList,k,d):
+  patterns=[]
+  neighbours=set()
+  
+  for element in DnaList:
+    for i in range(0,len(element)-k+1):
+      ngb=NeighBours(element[i:(i+k)],d)
+      neighbours=neighbours.union(ngb)
+  
+  for element in neighbours:
+    appear=True
+    for i in range(len(DnaList)):
+      if not PatternAppear(element,DnaList[i],d):
+        appear=False
+        break
+    if appear:
+      patterns.append(element)
+  
+  return list(set(patterns))
+
+res=MotifEnumeration(input().split(" "),int(input()),int(input()))
+for element in res:
+  print(element)
