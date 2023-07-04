@@ -1,45 +1,31 @@
-def HammingDistance(p,q):
-  if len(p)!=len(q):
-    return -1
-  count=0
-  for i in range(0,len(p)):
-    if p[i]!=q[i]:
-      count=count+1
-  
-  return count
-
 def Text(text,i,k):
   return text[i:(i+k)]
 
-def PatternCount(text,pattern):
-  count=0
-  for i in range(0,len(text)-len(pattern)+1):
-    if Text(text,i,len(pattern))==pattern:
-      count=count+1
-  return count
-
-def FrequentWords(text,k):
-  frequentPatterns=dict()
-  count=dict()
-  for i in range(0,len(text)-k+1):
-    pattern=Text(text,i,k)
-    count[i]=PatternCount(text,pattern)
+def HammingDistance(p,q):
+  if len(p)!=len(q):
+    return -1
   
-  maxCount=max(count.values())
+  d=0
+  for i in range(0,len(p)):
+    if p[i]!=q[i]:
+      d+=1
+  return d
+
+def AproximatePatternMatching(pattern,text,d):
+  k=len(pattern)
+  indecies=[]
 
   for i in range(0,len(text)-k+1):
-    if count[i]==maxCount:
-      frequentPatterns[i]=Text(text,i,k)
-  return frequentPatterns
+    kmer=Text(text,i,k)
+    if HammingDistance(pattern,kmer)<=d:
+      indecies.append(i)
+  
+  return indecies
+    
 
-def ApproximateMatchingProblem(pattern,text,d):
-  count=dict()
-  for i in range(0,len(text)-len(pattern)+1):
-    pat=Text(text,i,len(pattern))
-    if HammingDistance(pattern,pat)<=d:
-      count[i]=i
-  return count
 
-count=ApproximateMatchingProblem(input(),input(),5)
-for k,v in count.items():
-  print(v)
+res=AproximatePatternMatching(input(),input(),int(input()))
+
+for ind in res:
+  print(ind)
+
