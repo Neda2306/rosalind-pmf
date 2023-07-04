@@ -1,37 +1,39 @@
-def FirstSymbol(Pattern):
-  return Pattern[0]
+import itertools
 
-def Suffix(pattern):
-  return pattern[1:len(pattern)]
+def GenerateArray(k):
+  base=["A","C","G","T"]
+  array=list()
+  comb=[p for p in itertools.product(base,repeat=k)]
+
+  for element in comb:
+    pattern=""
+    for i in range(0,len(element)):
+      pattern=pattern+element[i]
+    array.append(pattern)
+  
+  return array
 
 def HammingDistance(p,q):
   if len(p)!=len(q):
     return -1
-  count=0
-  for i in range(0,len(p)):
+  
+  dist=0
+  for i in range(len(p)):
     if p[i]!=q[i]:
-      count=count+1
+      dist+=1
   
-  return count
+  return dist
+
+def Neighbours(pattern,d):
+  array=GenerateArray(len(pattern))
+  kmers=[]
+
+  for element in array:
+    if HammingDistance(pattern,element)<=d:
+      kmers.append(element)
   
-def Neighbors(pattern,d):
-  if d==0:
-    return [pattern]
-  if len(pattern)==1:
-    return ["A","C","G","T"]
+  return kmers
 
-  neighborhood=[]
-  base=['A','C','G','T']
-  suffixNeighbors=Neighbors(Suffix(pattern),d)
-
-  for i in range(0,len(suffixNeighbors)):
-    if HammingDistance(Suffix(pattern),suffixNeighbors[i])<d:
-      for c in base:
-        neighborhood.append(c+suffixNeighbors[i])
-    else:
-      neighborhood.append(FirstSymbol(pattern)+suffixNeighbors[i])
-  return neighborhood
-
-rez=Neighbors(input(),int(input()))
-for n in rez:
-  print(n)
+res=Neighbours(input(),int(input()))
+for element in res:
+  print(element)
