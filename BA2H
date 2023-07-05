@@ -1,24 +1,26 @@
+def Text(text,i,k):
+  return text[i:(i+k)]
+
 def HammingDistance(p,q):
   if len(p)!=len(q):
     return -1
-  count=0
+  dist=0
   for i in range(0,len(p)):
     if p[i]!=q[i]:
-      count=count+1
-  
-  return count
+      dist+=1
+  return dist
 
 def DistanceBetweenPatternAndStrings(pattern,dnaList):
   k=len(pattern)
-  distance=0
+  dist=0
   for dna in dnaList:
-    hammingDistance=k+1
+    hd=k+1
     for i in range(0,len(dna)-k+1):
-      kmer=dna[i:i+k]
-      if hammingDistance>HammingDistance(pattern,kmer):
-        hammingDistance=HammingDistance(pattern,kmer)
-    distance=distance+hammingDistance
-  return distance
+      kmer=Text(dna,i,k)
+      if HammingDistance(pattern,kmer)<hd:
+        hd=HammingDistance(pattern,kmer)
+    dist+=hd
+  return dist
 
-distance=DistanceBetweenPatternAndStrings(input(),input().split(' '))
-print(distance)
+res=DistanceBetweenPatternAndStrings(input(),input().split(" "))
+print(res)
