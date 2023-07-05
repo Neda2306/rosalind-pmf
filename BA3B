@@ -1,10 +1,8 @@
-def StringSpelled(path):
-  result=path[len(path)-1]
+def StringSpelled(dnaList):
+  text=dnaList[0]
+  for i in range(1,len(dnaList)):
+    text=text+dnaList[i][-1]
+  return text
 
-  for i in range(len(path)-2,-1,-1):
-    result=path[i][0]+result
-
-  return result
-
-result=StringSpelled(input().split(" "))
-print(result)
+res=StringSpelled(input().split(" "))
+print(res)
