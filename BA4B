@@ -1,20 +1,19 @@
-def ReverseComplement(pattern):
-  compPattern=""
-  for i in range(0,len(pattern)):
-    if pattern[i]=="A":
-      compPattern=compPattern+"T"
-    if pattern[i]=="T":
-      compPattern=compPattern+"A"
-    if pattern[i]=="C":
-      compPattern=compPattern+"G"
-    if pattern[i]=="G":
-      compPattern=compPattern+"C"
-  
-  revPattern=""
-  for i in range(len(compPattern)-1,-1,-1):
-    revPattern=revPattern+compPattern[i]
+def Text(text,i,k):
+  return text[i:(i+k)]
 
-  return revPattern
+def ReverseComplement(pattern):
+  complement=""
+  for letter in pattern:
+    if letter=="A":
+      complement=complement+"T"
+    if letter=="T":
+      complement=complement+"A"
+    if letter=="C":
+      complement=complement+"G"
+    if letter=="G":
+      complement=complement+"C"
+  return complement[::-1]
+
 GeneticCode={
     'AAA': 'K',     'CAA': 'Q',     'GAA': 'E',     'UAA': '*',
     'AAC': 'N',     'CAC': 'H',     'GAC': 'D',     'UAC': 'Y',
@@ -34,31 +33,35 @@ GeneticCode={
     'AUU': 'I',     'CUU': 'L',     'GUU': 'V',     'UUU': 'F'
 }
 
+def GetKmers(text,k):
+  kmers=[]
+  for i in range(0,len(text)-k+1):
+    kmers.append(Text(text,i,k))
+  return kmers
+
 def ProteinTranslation(pattern):
   peptide=""
   for i in range(0,len(pattern),3):
-    kmer=pattern[i:i+3]
-    symbol=GeneticCode[kmer]
-    if symbol=='*':
+    code=Text(pattern,i,3)
+    if GeneticCode[code]=="*":
       break
-    peptide=peptide+symbol
-  
+    peptide=peptide+GeneticCode[code]
   return peptide
 
 def DnaToRna(pattern):
-  return pattern.replace('T','U')
+  return pattern.replace("T","U")
 
 def PeptideEncoding(text,peptide):
-  k=3*len(peptide)
-  substrings=list()
-  for i in range(0,len(text)-k+1):
-    kmer=text[i:i+k]
+  k=len(peptide)*3
+  kmers=GetKmers(text,k)
+  podstrings=[]
+  for kmer in kmers:
     rna=DnaToRna(kmer)
-    revComp=ReverseComplement(kmer)
-    if ProteinTranslation(rna)==peptide or ProteinTranslation(DnaToRna(revComp))==peptide:
-      substrings.append(kmer)
-  return substrings
+    revComplemet=ReverseComplement(kmer)
+    if ProteinTranslation(rna)==peptide or ProteinTranslation(DnaToRna(revComplemet))==peptide:
+      podstrings.append(kmer)
+  return podstrings
 
-rez=PeptideEncoding(input(),input())
-for element in rez:
+res=PeptideEncoding(input(),input())
+for element in res:
   print(element)
