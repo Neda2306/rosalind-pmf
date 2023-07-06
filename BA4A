@@ -1,3 +1,6 @@
+def Text(text,i,k):
+  return text[i:(i+k)]
+
 GeneticCode={
     'AAA': 'K',     'CAA': 'Q',     'GAA': 'E',     'UAA': '*',
     'AAC': 'N',     'CAC': 'H',     'GAC': 'D',     'UAC': 'Y',
@@ -18,15 +21,14 @@ GeneticCode={
 }
 
 def ProteinTranslation(pattern):
+  k=3
   peptide=""
   for i in range(0,len(pattern),3):
-    kmer=pattern[i:i+3]
-    symbol=GeneticCode[kmer]
-    if symbol=='*':
+    code=Text(pattern,i,k)
+    if GeneticCode[Text(pattern,i,k)]=="*":
       break
-    peptide=peptide+symbol
-  
+    peptide=peptide+GeneticCode[code]
   return peptide
 
-peptide=ProteinTranslation(input())
-print(peptide)
+res=ProteinTranslation(input())
+print(res)
