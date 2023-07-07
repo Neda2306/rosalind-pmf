@@ -9,7 +9,5 @@ def DPChange(money,coins):
           minNumCoins[m]=minNumCoins[m-int(coins[i])]+1
   return minNumCoins[money]
 
-money=int(input())
-coins=input().split(",")
-change=DPChange(money,coins)
-print(change)
+res=DPChange(int(input()),input().split(","))
+print(res)
