@@ -1,0 +1,23 @@
+def ChromosomeToCycle(chromosome):
+  nodes=[]
+  for j in range(0,len(chromosome)):
+    i=chromosome[j]
+    if int(i)>0:
+      nodes.append(2*int(i)-1)
+      nodes.append(2*int(i))
+    else:
+      nodes.append(-2*int(i))
+      nodes.append(-2*int(i)-1)
+  return nodes
+
+def RosalindOutput(nodes):
+  return "("+" ".join([str(x) for x in nodes])+")"
+
+with open("/content/sample_data/rosalind_ba6f.txt") as file:
+  line=file.readline()
+
+P=line[1:len(line)-2]
+P=P.split(' ')
+
+res=ChromosomeToCycle(P)
+RosalindOutput(res)
