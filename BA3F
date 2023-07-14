@@ -1,0 +1,39 @@
+def RosalindInput(text):
+  dictionary={}
+  for line in text:
+    key,values=line.split(" -> ")
+    values=values.split(",")
+    dictionary[key]=values
+  return dictionary
+
+def EulerianCycle(graph):
+  #start cycle with any node
+  cycle=[list(graph.keys())[0]]
+  #run until all edges moved from graph to cycle
+  while len(graph)>0:
+    #whenever cycle closes rotate to a node with remaining targets
+    if cycle[0]==cycle[-1]:
+      while not cycle[0] in graph:
+        cycle.pop(0)
+        cycle.append(cycle[0])
+    #the last node of cycle is new start
+    start=cycle[-1]
+    #move one target at a time from graph to the end of cycle
+    cycle.append(graph[start].pop())
+    #clean up emmpty dict entries of graph
+    if len(graph[start])==0:
+      del graph[start]
+  return cycle
+
+def Output(res):
+  out='->'.join(res)
+  print(out)
+
+with open("/content/sample_data/rosalind_ba3f(1).txt") as file:
+  lines=file.readlines()
+for i in range(0,len(lines)):
+  lines[i]=lines[i].strip('\n')
+
+graph=RosalindInput(lines)
+res=EulerianCycle(graph)
+Output(res)
