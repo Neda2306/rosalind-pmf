@@ -1,0 +1,23 @@
+import collections
+
+def Prefix(string):
+  return string[:len(string)-1]
+
+def Sufix(string):
+  return string[1:]
+
+def Overlap(patterns):
+  n=len(patterns)
+  pairs={}
+
+  for i in range(n):
+    for j in range(n):
+      if i!=j and Sufix(patterns[i])==Prefix(patterns[j]):
+        pairs[patterns[i]]=patterns[j]
+  
+  od=collections.OrderedDict(sorted(pairs.items()))
+  return od
+
+res=Overlap(input().split())
+for k in res.keys():
+  print(k+" -> "+res[k])
