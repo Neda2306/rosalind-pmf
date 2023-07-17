@@ -1,0 +1,27 @@
+def CycleToChromosome(nodes):
+  chromosome = []
+  for i in range(0, len(nodes), 2):
+      if nodes[i] < nodes[i + 1]:
+            chromosome.append(nodes[i + 1] // 2)
+      if nodes[i] > nodes[i + 1]:
+            chromosome.append(-1 * nodes[i] // 2)
+  return chromosome
+
+with open("/content/sample_data/rosalind_ba6g.txt") as file:
+  line=file.readline().strip().split()
+  line[0]=line[0].replace("(","")
+  line[len(line)-1]=line[len(line)-1].replace(")","")
+
+for i in range(len(line)):
+  line[i]=int(line[i])
+
+
+res=CycleToChromosome(line)
+
+for i in range(len(res)):
+  if res[i]>0:
+    res[i]='+'+str(res[i])
+  else:
+    res[i]=str(res[i])
+answ="("+" ".join(res)+")"
+print(answ)
