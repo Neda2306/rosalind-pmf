@@ -1,0 +1,27 @@
+def TwoBreaks(edges,i,i_,j,j_):
+  for k in range(len(edges)):
+    if edges[k]==(i,i_):
+      edges[k]=(j_,i_)
+    elif edges[k]==(i_,i):
+      edges[k]=(i_,j_)
+    elif edges[k]==(j,j_):
+      edges[k]=(j,i)
+    elif edges[k]==(j_,j):
+      edges[k]=(i,j)
+  print(edges)
+
+with open("/content/sample_data/rosalind_ba6j(1).txt") as file:
+  edges=file.readline().strip().split("), (")
+  breaks=file.readline().strip().split(",")
+
+edges[0]=edges[0].replace("(","")
+edges[len(edges)-1]=edges[len(edges)-1].replace(")","")
+for i in range(len(edges)):
+  node1,node2=edges[i].split(",")
+  edges[i]=(int(node1),int(node2))
+i=int(breaks[0])
+i_=int(breaks[1])
+j=int(breaks[2])
+j_=int(breaks[3])
+
+TwoBreaks(edges,i,i_,j,j_)
