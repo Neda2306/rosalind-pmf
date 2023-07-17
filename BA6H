@@ -1,0 +1,32 @@
+def ChromosomeToCYcle(chromosome):
+  nodes=[]
+  for j in range(len(chromosome)):
+    i=chromosome[j]
+    if int(i)>0:
+      nodes.append(2*int(i)-1)
+      nodes.append(2*int(i))
+    else:
+      nodes.append(-2*int(i))
+      nodes.append(-2*int(i)-1)
+  return nodes
+
+def ColoredEdges(P):
+  edges=[]
+  for chromosome in P:
+    nodes=ChromosomeToCYcle(chromosome)
+    for j in range(len(chromosome)):
+      edges.append((nodes[(2*j+1)%len(nodes)],nodes[(2*j+2)%len(nodes)]))
+  return edges
+
+def RosalindOutput(edges):
+  return repr(edges)[1:-1]
+
+with open("/content/sample_data/rosalind_ba6h(1).txt") as file:
+  line=file.readline().strip().split(")")
+
+for i in range(len(line)-1):
+  line[i]=line[i].replace("(","").split()
+line=line[:len(line)-1]
+
+res=ColoredEdges(line)
+print(RosalindOutput(res))
