@@ -1,0 +1,19 @@
+def Prefix(string):
+  return string[:len(string)-1]
+
+def Sufix(string):
+  return string[1:]
+
+def DeBrujin(patterns):
+  printedprefixes=[]
+  for i in range(0,len(patterns)):
+    t=""
+    if(Prefix(patterns[i]) not in printedprefixes):
+      t=Prefix(patterns[i]) + " -> " + Sufix(patterns[i])
+      printedprefixes.append(Prefix(patterns[i]))
+      for j in range(i+1,len(patterns)):
+        if(Prefix(patterns[j])==Prefix(patterns[i])):
+          t+="," + Sufix(patterns[j])
+      print(t, end="\n")
+
+DeBrujin(input().split())
